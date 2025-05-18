@@ -10,6 +10,12 @@ interface ArticleDetailProps {
   article: Article;
 }
 
+interface MediaContent {
+  type: 'image' | 'video';
+  url: string;
+  id: string;
+}
+
 export default function ArticleDetail({ article }: ArticleDetailProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -22,7 +28,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
     }).format(date);
   };
 
-  const renderMediaContent = (media: { type: string; url: string; id: string }) => {
+  const renderMediaContent = (media: MediaContent) => {
     if (media.type === "image") {
       return (
         <div key={media.id} className={styles.mediaContainer}>

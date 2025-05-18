@@ -25,19 +25,25 @@ export default function NewsPage() {
     setIsDialogOpen(true);
   };
 
+  const hasArticles = articles.length > 0;
+
   return (
     <div className={styles.layoutContainer}>
       <div className={styles.headerContainer}>
         <h1 className={styles.newsTitle}>Новости</h1>
       </div>
       <div className={styles.articlesGrid}>
-        {articles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            onArticleClick={handleArticleClick}
-          />
-        ))}
+        {hasArticles ? (
+          articles.map((article) => (
+            <ArticleCard
+              key={article.id}
+              article={article}
+              onArticleClick={handleArticleClick}
+            />
+          ))
+        ) : (
+          <p>Загрузка новостей...</p>
+        )}
       </div>
       {isDialogOpen && selectedArticle && (
         <Dialog
