@@ -1,108 +1,123 @@
 "use client";
 
-import Link from "next/link";
-import styles from "./ArticleDetail.module.css";
-import { Article } from "@/app/types";
+import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { Article } from "@/app/types";
+import styles from "./ArticleDetail.module.css";
 
 interface ArticleDetailProps {
   article: Article;
 }
 
 export default function ArticleDetail({ article }: ArticleDetailProps) {
-  const formatPublicationDate = (timestamp: number): string => {
-    return new Date(timestamp * 1000).toLocaleDateString("ru-RU", {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const formatPublicationDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("ru-RU", {
       day: "numeric",
       month: "long",
       year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+    }).format(date);
   };
 
-  const getCategoryLabel = (category: string): string => {
-    return category.replace("Вика_", "");
-  };
-
-  const renderMediaContent = (media: any) => {
-    if (media.type === "PHOTO") {
+  const renderMediaContent = (media: { type: string; url: string; id: string }) => {
+    if (media.type === "image") {
       return (
-        <motion.img
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          src={media.image.src}
-          alt="Изображение"
-          className={styles.mediaImage}
-          loading="lazy"
-        />
+        <div key={media.id} className={styles.mediaContainer}>
+          <Image
+            src={media.url}
+            alt="Article media"
+            width={800}
+            height={600}
+            className={styles.mediaImage}
+            onClick={() => setSelectedImage(media.url)}
+          />
+        </div>
+      );
+    } else if (media.type === "video") {
+      return (
+        <div key={media.id} className={styles.mediaContainer}>
+          <video
+            src={media.url}
+            controls
+            className={styles.mediaVideo}
+          />
+        </div>
       );
     }
-
-    return (
-      <motion.a
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        href={media.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.externalResource}
-      >
-        <img
-          src={media.image.src}
-          alt={media.titleLink}
-          className={styles.resourcePreview}
-        />
-        <div className={styles.resourceInfo}>
-          <span className={styles.resourceTitle}>{media.titleLink}</span>
-          <span className={styles.resourceUrl}>{media.link}</span>
-        </div>
-      </motion.a>
-    );
+    return null;
   };
 
   return (
-    <motion.article
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       className={styles.articleContainer}
     >
-      <Link href="/" className={styles.navigationLink}>
-        <span className={styles.backIcon}>←</span>
-        Вернуться к списку
-      </Link>
-
       <div className={styles.articleHeader}>
-        <span className={styles.categoryBadge}>
-          {getCategoryLabel(article.type)}
-        </span>
-        <h1 className={styles.articleTitle}>
-          {article.text.split("\n")[0]}
-        </h1>
-        <time className={styles.publicationDate}>
-          📅 {formatPublicationDate(article.date)}
-        </time>
+        <h1 className={styles.articleTitle}>{article.title}</h1>
+        <div className={styles.articleMeta}>
+          <span className={styles.publicationDate}>
+            {formatPublicationDate(article.publicationDate)}
+          </span>
+          {article.category && (
+            <span className={styles.categoryBadge}>{article.category}</span>
+          )}
+        </div>
       </div>
 
+      {article.media && article.media.length > 0 && (
+        <div className={styles.mediaGrid}>
+          {article.media.map(renderMediaContent)}
+        </div>
+      )}
+
       <div className={styles.articleContent}>
-        {article.text.split("\n").map((paragraph, index) => (
+        {article.content.map((paragraph, index) => (
           <p key={index} className={styles.paragraph}>
             {paragraph}
           </p>
         ))}
       </div>
 
-      {article.attachments && article.attachments.length > 0 && (
-        <div className={styles.mediaGallery}>
-          {article.attachments.map((media, index) => (
-            <div key={`${media.type}-${index}`}>
-              {renderMediaContent(media)}
-            </div>
-          ))}
+      {article.externalResources && article.externalResources.length > 0 && (
+        <div className={styles.externalResources}>
+          <h2 className={styles.externalResourcesTitle}>Дополнительные материалы</h2>
+          <div className={styles.externalResourcesList}>
+            {article.externalResources.map((resource, index) => (
+              <a
+                key={index}
+                href={resource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.externalResource}
+              >
+                {resource.title}
+              </a>
+            ))}
+          </div>
         </div>
       )}
-    </motion.article>
+
+      {selectedImage && (
+        <div
+          className={styles.imageModal}
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className={styles.imageModalContent}>
+            <Image
+              src={selectedImage}
+              alt="Selected media"
+              width={1200}
+              height={800}
+              className={styles.modalImage}
+            />
+          </div>
+        </div>
+      )}
+    </motion.div>
   );
 }
