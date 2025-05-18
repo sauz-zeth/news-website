@@ -1,0 +1,41 @@
+/* app/@modal/(.)photos/[id]/style.module.css */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modalContent {
+  background-color: white;
+  color: black;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: #ef4444;
+}

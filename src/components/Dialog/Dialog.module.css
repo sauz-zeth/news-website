@@ -1,0 +1,80 @@
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dialogContent {
+  background: #1e1e1e;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  padding: 32px 28px;
+  position: relative;
+  min-width: 340px;
+  max-width: 480px;
+  width: 100%;
+}
+.dismissButton {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.dismissButton:hover {
+  color: #e0e0e0;
+}
+.dismissIcon {
+  font-size: 22px;
+}
+.dialogHeader {
+  margin-bottom: 18px;
+}
+.categoryBadge {
+  display: inline-block;
+  background: #333;
+  color: #e0e0e0;
+  border-radius: 8px;
+  padding: 2px 12px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.articleTitle {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #e0e0e0;
+}
+.publicationDate {
+  color: #aaa;
+  font-size: 15px;
+}
+.dialogBody {
+  margin-bottom: 18px;
+}
+.articlePreview {
+  color: #ccc;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.dialogFooter {
+  border-top: 1px solid #333;
+  padding-top: 14px;
+  text-align: right;
+}
+.viewFullButton {
+  color: #0070f3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.viewFullButton:hover {
+  color: #0051a3;
+} 

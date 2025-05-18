@@ -1,0 +1,100 @@
+.articleContainer {
+  background: #1e1e1e;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  padding: 32px 28px;
+  margin: 32px auto;
+  max-width: 800px;
+}
+.navigationLink {
+  display: inline-flex;
+  align-items: center;
+  color: #0070f3;
+  text-decoration: none;
+  margin-bottom: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.navigationLink:hover {
+  color: #0051a3;
+}
+.backIcon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+.articleHeader {
+  margin-bottom: 18px;
+}
+.categoryBadge {
+  display: inline-block;
+  background: #333;
+  color: #e0e0e0;
+  border-radius: 8px;
+  padding: 2px 12px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.articleTitle {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #e0e0e0;
+}
+.publicationDate {
+  color: #aaa;
+  font-size: 15px;
+}
+.articleContent {
+  margin-bottom: 18px;
+}
+.paragraph {
+  color: #ccc;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+.mediaGallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 18px;
+}
+.mediaImage {
+  width: 320px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.externalResource {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #333;
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: #e0e0e0;
+  transition: background 0.2s;
+}
+.externalResource:hover {
+  background: #444;
+}
+.resourcePreview {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.resourceInfo {
+  display: flex;
+  flex-direction: column;
+}
+.resourceTitle {
+  font-weight: 500;
+  font-size: 15px;
+}
+.resourceUrl {
+  color: #aaa;
+  font-size: 13px;
+  word-break: break-all;
+} 
