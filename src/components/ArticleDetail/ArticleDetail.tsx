@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Article } from "@/app/types";
 import styles from "./ArticleDetail.module.css";
 
@@ -50,6 +51,12 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
       exit={{ opacity: 0, y: -20 }}
       className={styles.articleContainer}
     >
+      <div className={styles.backButtonContainer}>
+        <Link href="/" className={styles.backButton}>
+          ← Вернуться на главную
+        </Link>
+      </div>
+
       <div className={styles.articleHeader}>
         <h1 className={styles.articleTitle}>{article.text.split("\n")[0]}</h1>
         <div className={styles.articleMeta}>

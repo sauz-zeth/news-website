@@ -1,54 +1,143 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Article } from "./types";
 import { fetchArticles } from "@/lib/api";
 import ArticleCard from "@/components/ArticleCard/ArticleCard";
+import ArticleCardSkeleton from "@/components/ArticleCardSkeleton/ArticleCardSkeleton";
 import Dialog from "@/components/Dialog/Dialog";
+import { AnimatePresence, motion } from "framer-motion";
 import styles from "./page.module.css";
 
 export default function NewsPage() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [state, setState] = useState<{
+    articles: Article[];
+    selectedArticle: Article | null;
+    isDialogOpen: boolean;
+    isLoading: boolean;
+  }>({
+    articles: [],
+    selectedArticle: null,
+    isDialogOpen: false,
+    isLoading: true,
+  });
 
   useEffect(() => {
+    let mounted = true;
+
     const loadArticles = async () => {
-      const data = await fetchArticles();
-      setArticles(data);
+      try {
+        const data = await fetchArticles();
+        if (mounted) {
+          startTransition(() => {
+            setState(prev => ({
+              ...prev,
+              articles: data,
+              isLoading: false
+            }));
+          });
+        }
+      } catch (error) {
+        console.error("Error loading articles:", error);
+        if (mounted) {
+          startTransition(() => {
+            setState(prev => ({
+              ...prev,
+              isLoading: false
+            }));
+          });
+        }
+      }
     };
+
     loadArticles();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const handleArticleClick = (article: Article) => {
-    setSelectedArticle(article);
-    setIsDialogOpen(true);
+    setState(prev => ({
+      ...prev,
+      selectedArticle: article,
+      isDialogOpen: true
+    }));
   };
 
-  const hasArticles = articles.length > 0;
+  const handleDialogDismiss = () => {
+    setState(prev => ({
+      ...prev,
+      isDialogOpen: false
+    }));
+  };
+
+  const renderSkeletons = () => (
+    <>
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+      <ArticleCardSkeleton />
+    </>
+  );
 
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.newsGrid}>
-          {hasArticles ? (
-            articles.map((article) => (
-              <ArticleCard
-                key={article.id}
-                article={article}
-                onArticleClick={handleArticleClick}
-              />
-            ))
-          ) : (
-            <p>Загрузка новостей...</p>
-          )}
+          <AnimatePresence mode="wait">
+            {(state.isLoading || isPending) ? (
+              <motion.div
+                key="skeletons"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className={styles.contentContainer}
+              >
+                {renderSkeletons()}
+              </motion.div>
+            ) : state.articles.length > 0 ? (
+              <motion.div
+                key="articles"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className={styles.contentContainer}
+              >
+                {state.articles.map((article) => (
+                  <ArticleCard
+                    key={article.id}
+                    article={article}
+                    onArticleClick={handleArticleClick}
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                Новости не найдены
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-      {isDialogOpen && selectedArticle && (
+      {state.isDialogOpen && state.selectedArticle && (
         <Dialog
-          article={selectedArticle}
-          isVisible={isDialogOpen}
-          onDismiss={() => setIsDialogOpen(false)}
+          article={state.selectedArticle}
+          isVisible={state.isDialogOpen}
+          onDismiss={handleDialogDismiss}
         />
       )}
     </main>

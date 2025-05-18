@@ -70,11 +70,22 @@
   text-align: right;
 }
 .viewFullButton {
-  color: #0070f3;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  border-radius: 8px;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 .viewFullButton:hover {
-  color: #0051a3;
+  background: #0070f3;
+  border-color: #0070f3;
+  transform: translateY(-2px);
+}
+.viewFullButton:active {
+  transform: translateY(0);
 } 
