@@ -1,7 +1,11 @@
 export const dynamic = "force-dynamic";
 
 import { newsData } from "@/lib/newsData";
+<<<<<<< HEAD
 import NewsDetail from "@/components/NewsDetail/NewsDetail";
+=======
+import ArticleDetail from "@/components/ArticleDetail/ArticleDetail";
+>>>>>>> a1154c7 (deployment bug)
 import { notFound } from "next/navigation";
 
 export default async function RandomNewsPage() {
@@ -14,5 +18,9 @@ export default async function RandomNewsPage() {
     notFound();
   }
 
+<<<<<<< HEAD
   return <NewsDetail news={randomNews} />;
+=======
+  return <ArticleDetail article={randomNews} />;
+>>>>>>> a1154c7 (deployment bug)
 }
