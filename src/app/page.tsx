@@ -48,7 +48,8 @@ export default function NewsPage() {
       {isDialogOpen && selectedArticle && (
         <Dialog
           article={selectedArticle}
-          onClose={() => setIsDialogOpen(false)}
+          isVisible={isDialogOpen}
+          onDismiss={() => setIsDialogOpen(false)}
         />
       )}
     </div>
