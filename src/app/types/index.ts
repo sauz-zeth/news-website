@@ -22,8 +22,21 @@ export type MediaContent = ImageMedia | ExternalLink;
 
 export interface Article {
   id: number;
+  title: string;
   text: string;
   date: number;
+  publicationDate: string;
   type: string;
+  category?: string;
+  content: string[];
+  media?: {
+    type: 'image' | 'video';
+    url: string;
+    id: string;
+  }[];
+  externalResources?: {
+    title: string;
+    url: string;
+  }[];
   attachments?: MediaContent[];
 }

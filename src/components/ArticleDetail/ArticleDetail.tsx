@@ -10,45 +10,32 @@ interface ArticleDetailProps {
   article: Article;
 }
 
-interface MediaContent {
-  type: 'image' | 'video';
-  url: string;
-  id: string;
-}
-
 export default function ArticleDetail({ article }: ArticleDetailProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const formatPublicationDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("ru-RU", {
+  const formatPublicationDate = (timestamp: number): string => {
+    return new Date(timestamp * 1000).toLocaleDateString("ru-RU", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    }).format(date);
+    });
   };
 
-  const renderMediaContent = (media: MediaContent) => {
-    if (media.type === "image") {
+  const getCategoryLabel = (category: string): string => {
+    return category.replace("Вика_", "");
+  };
+
+  const renderMediaContent = (media: { type: string; image: { src: string; width: number; height: number } }) => {
+    if (media.type === "PHOTO") {
       return (
-        <div key={media.id} className={styles.mediaContainer}>
+        <div key={media.image.src} className={styles.mediaContainer}>
           <Image
-            src={media.url}
+            src={media.image.src}
             alt="Article media"
-            width={800}
-            height={600}
+            width={media.image.width}
+            height={media.image.height}
             className={styles.mediaImage}
-            onClick={() => setSelectedImage(media.url)}
-          />
-        </div>
-      );
-    } else if (media.type === "video") {
-      return (
-        <div key={media.id} className={styles.mediaContainer}>
-          <video
-            src={media.url}
-            controls
-            className={styles.mediaVideo}
+            onClick={() => setSelectedImage(media.image.src)}
           />
         </div>
       );
@@ -64,49 +51,30 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
       className={styles.articleContainer}
     >
       <div className={styles.articleHeader}>
-        <h1 className={styles.articleTitle}>{article.title}</h1>
+        <h1 className={styles.articleTitle}>{article.text.split("\n")[0]}</h1>
         <div className={styles.articleMeta}>
           <span className={styles.publicationDate}>
-            {formatPublicationDate(article.publicationDate)}
+            {formatPublicationDate(article.date)}
           </span>
-          {article.category && (
-            <span className={styles.categoryBadge}>{article.category}</span>
-          )}
+          <span className={styles.categoryBadge}>
+            {getCategoryLabel(article.type)}
+          </span>
         </div>
       </div>
 
-      {article.media && article.media.length > 0 && (
+      {article.attachments && article.attachments.length > 0 && (
         <div className={styles.mediaGrid}>
-          {article.media.map(renderMediaContent)}
+          {article.attachments.map(renderMediaContent)}
         </div>
       )}
 
       <div className={styles.articleContent}>
-        {article.content.map((paragraph, index) => (
+        {article.text.split("\n").map((paragraph, index) => (
           <p key={index} className={styles.paragraph}>
             {paragraph}
           </p>
         ))}
       </div>
-
-      {article.externalResources && article.externalResources.length > 0 && (
-        <div className={styles.externalResources}>
-          <h2 className={styles.externalResourcesTitle}>Дополнительные материалы</h2>
-          <div className={styles.externalResourcesList}>
-            {article.externalResources.map((resource, index) => (
-              <a
-                key={index}
-                href={resource.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.externalResource}
-              >
-                {resource.title}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
 
       {selectedImage && (
         <div
