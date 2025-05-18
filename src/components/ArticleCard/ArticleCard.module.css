@@ -10,6 +10,7 @@
   position: relative;
   width: 100%;
   height: 400px;
+  transition: all 0.3s ease;
 }
 
 .article::before {
@@ -24,6 +25,7 @@
   transition: opacity 0.3s ease;
   border-radius: 12px;
   z-index: 0;
+  pointer-events: none;
 }
 
 .article:hover {
@@ -61,11 +63,11 @@
   font-size: 13px;
   margin-bottom: 12px;
   width: fit-content;
+  transition: background-color 0.3s ease;
 }
 
 .article:hover .category {
   background: #0070f3;
-  transform: translateY(-2px);
 }
 
 .heading {
@@ -79,6 +81,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.3;
+  transition: color 0.3s ease;
 }
 
 .article:hover .heading {
@@ -89,6 +92,7 @@
   color: #aaa;
   font-size: 14px;
   margin-bottom: 12px;
+  transition: color 0.3s ease;
 }
 
 .article:hover .timestamp {
@@ -106,6 +110,7 @@
   text-overflow: ellipsis;
   line-height: 1.5;
   flex-grow: 1;
+  transition: color 0.3s ease;
 }
 
 .article:hover .description {
@@ -130,19 +135,12 @@
   flex-shrink: 0;
 }
 
-.article:hover .image-gallery {
-  transform: translateY(-2px);
-}
-
-.gallery-item:hover {
-  transform: scale(1.05);
-}
-
 .gallery-image {
   width: 180px;
   height: 120px;
   object-fit: cover;
   border-radius: 8px;
+  transition: box-shadow 0.3s ease;
 }
 
 .article:hover .gallery-image {
@@ -154,6 +152,7 @@
   background: #333;
   border-radius: 2px;
   margin-bottom: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .article:hover .gallery-progress {
@@ -170,15 +169,11 @@
   margin-top: auto;
   text-decoration: none;
   color: #e0e0e0;
+  transition: background-color 0.3s ease;
 }
 
 .article:hover .external-link {
   background: #0070f3;
-  transform: translateY(-2px);
-}
-
-.external-link:hover {
-  background: #0051a3;
 }
 
 .link-preview {
@@ -186,6 +181,7 @@
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
+  transition: transform 0.3s ease;
 }
 
 .article:hover .link-preview {
@@ -198,6 +194,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.3s ease;
 }
 
 .article:hover .link-title {

@@ -64,92 +64,44 @@ export default function ArticleCard({ article, onArticleClick }: ArticleProps) {
       className={styles.article}
       onClick={() => onArticleClick(article)}
     >
-      <motion.div 
-        className={styles["article-content"]}
-        whileHover={{ 
-          transition: { duration: 0.2 }
-        }}
-      >
-        <motion.span 
-          className={styles.category}
-          whileHover={{ 
-            y: -2,
-            backgroundColor: "#0070f3",
-            transition: { duration: 0.2 }
-          }}
-        >
+      <div className={styles["article-content"]}>
+        <span className={styles.category}>
           {getCategoryName(article.type)}
-        </motion.span>
-        <motion.h2 
-          className={styles.heading}
-          whileHover={{ 
-            color: "#0070f3",
-            transition: { duration: 0.2 }
-          }}
-        >
+        </span>
+        <h2 className={styles.heading}>
           {article.text.split("\n")[0]}
-        </motion.h2>
-        <motion.p 
-          className={styles.timestamp}
-          whileHover={{ 
-            color: "#0070f3",
-            transition: { duration: 0.2 }
-          }}
-        >
+        </h2>
+        <p className={styles.timestamp}>
           📅 {formatTimestamp(article.date)}
-        </motion.p>
+        </p>
 
-        <motion.p 
-          className={styles.description}
-          whileHover={{ 
-            color: "#e0e0e0",
-            transition: { duration: 0.2 }
-          }}
-        >
+        <p className={styles.description}>
           {article.text}
-        </motion.p>
+        </p>
 
         {images.length > 0 && (
           <>
-            <motion.div
+            <div
               ref={galleryRef}
               onScroll={handleGalleryScroll}
               className={styles["image-gallery"]}
-              whileHover={{ 
-                y: -2,
-                transition: { duration: 0.2 }
-              }}
             >
               {images.map((media, index) => (
-                <motion.div 
+                <div 
                   key={index} 
                   className={styles["gallery-item"]}
-                  whileHover={{ 
-                    scale: 1.05,
-                    transition: { duration: 0.2 }
-                  }}
                 >
-                  <motion.img 
+                  <img 
                     src={media.image.src} 
                     alt="Изображение" 
                     loading="lazy"
                     className={styles["gallery-image"]}
-                    whileHover={{ 
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                      transition: { duration: 0.2 }
-                    }}
                   />
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
             {hasGallery && (
-              <motion.div 
-                className={styles["gallery-progress"]}
-                whileHover={{ 
-                  backgroundColor: "#0070f3",
-                  transition: { duration: 0.2 }
-                }}
-              />
+              <div className={styles["gallery-progress"]} />
             )}
           </>
         )}
@@ -158,42 +110,27 @@ export default function ArticleCard({ article, onArticleClick }: ArticleProps) {
           article.attachments?.map((media, index) => {
             if (media.type === "LINK") {
               return (
-                <motion.a
+                <a
                   key={index}
                   href={media.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles["external-link"]}
-                  whileHover={{ 
-                    y: -2,
-                    backgroundColor: "#0070f3",
-                    transition: { duration: 0.2 }
-                  }}
                 >
-                  <motion.img 
+                  <img 
                     src={media.image.src} 
                     alt={media.titleLink}
                     className={styles["link-preview"]}
-                    whileHover={{ 
-                      scale: 1.1,
-                      transition: { duration: 0.2 }
-                    }}
                   />
-                  <motion.span 
-                    className={styles["link-title"]}
-                    whileHover={{ 
-                      color: "#fff",
-                      transition: { duration: 0.2 }
-                    }}
-                  >
+                  <span className={styles["link-title"]}>
                     {media.titleLink}
-                  </motion.span>
-                </motion.a>
+                  </span>
+                </a>
               );
             }
             return null;
           })}
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

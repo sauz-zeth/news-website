@@ -28,22 +28,21 @@ export default function NewsPage() {
   const hasArticles = articles.length > 0;
 
   return (
-    <div className={styles.layoutContainer}>
-      <div className={styles.headerContainer}>
-        <h1 className={styles.newsTitle}>Новости</h1>
-      </div>
-      <div className={styles.articlesGrid}>
-        {hasArticles ? (
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              onArticleClick={handleArticleClick}
-            />
-          ))
-        ) : (
-          <p>Загрузка новостей...</p>
-        )}
+    <main className={styles.main}>
+      <div className={styles.container}>
+        <div className={styles.newsGrid}>
+          {hasArticles ? (
+            articles.map((article) => (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                onArticleClick={handleArticleClick}
+              />
+            ))
+          ) : (
+            <p>Загрузка новостей...</p>
+          )}
+        </div>
       </div>
       {isDialogOpen && selectedArticle && (
         <Dialog
@@ -52,6 +51,6 @@ export default function NewsPage() {
           onDismiss={() => setIsDialogOpen(false)}
         />
       )}
-    </div>
+    </main>
   );
 }
